@@ -203,6 +203,88 @@ La API en `crud-api` es más avanzada. Para probarla, necesitarás herramientas 
 
 ---
 
+## Parte 7: Guía Práctica Paso a Paso
+
+### Paso 1: Explorar la API Externa (Como está ahora)
+
+1.  **No necesitas instalar nada.** Simplemente abre el archivo `index.html` en tu navegador web (Chrome, Firefox, etc.).
+2.  **Observa:** Verás que carga noticias reales sobre la India. Si usas el buscador o haces clic en las categorías, las noticias cambiarán.
+3.  **Conclusión:** Estás viendo el frontend consumir datos en tiempo real desde la API externa `newsapi.org`.
+
+### Paso 2: Levantar y Probar la API Básica Local
+
+Ahora, vamos a encender nuestra propia "cocina" de datos.
+
+1.  Abre una terminal o línea de comandos.
+2.  Navega a la carpeta de la API básica: `cd basic-api`
+3.  Instala las dependencias (Express y Cors): `npm install`
+4.  Inicia el servidor: `node app.js`
+5.  Verás un mensaje: `Server is running on http://localhost:3000`.
+6.  Abre tu navegador y ve a `http://localhost:3000`.
+7.  **Observa:** Verás el texto JSON "crudo" que nuestra API local está sirviendo. ¡Felicidades, tu primera API está funcionando!
+
+### Paso 3: Conectar el Frontend a la API Local
+
+Vamos a decirle al mesero que pida la comida a nuestra cocina local en lugar de al restaurante de la otra ciudad.
+
+1.  Abre el archivo `script.js` en un editor de código.
+2.  Busca la función `fetchNews(query)` y modifícala. Comenta (o borra) las líneas de la API externa y añade la URL de tu API local.
+
+    **Código Original:**
+    ```javascript
+    async function fetchNews(query) {
+        const res = await fetch(`${url}${query}&apiKey=${API_KEY}`);
+        const data = await res.json();
+        bindData(data.articles);
+        console.log(data)
+    }
+    ```
+
+    **Código Modificado:**
+    ```javascript
+    async function fetchNews(query) {
+        // La API local no usa el parámetro "query", pero lo mantenemos para no cambiar la estructura
+        const res = await fetch(`http://localhost:3000/`); // ¡Cambiamos la URL!
+        const data = await res.json();
+        bindData(data.articles);
+        console.log(data)
+    }
+    ```
+3.  Guarda el archivo `script.js`.
+4.  **Importante:** Asegúrate de que tu servidor de `basic-api` siga corriendo.
+5.  Recarga el archivo `index.html` en tu navegador.
+6.  **Observa:** Ahora la página muestra las 4 noticias que están "hardcodeadas" en tu archivo `basic-api/app.js`. ¡Has conectado tu frontend a tu backend local!
+
+### Paso 4: Explorar la API CRUD
+
+La API en `crud-api` es más avanzada. Para probarla, necesitarás herramientas que puedan enviar peticiones `POST`, `PUT` y `DELETE`, ya que un navegador por sí solo principalmente hace `GET`.
+
+-   **Para iniciarla:** Sigue los mismos pasos que con la `basic-api` (`cd crud-api`, `npm install`, `node app.js`).
+-   **Para probarla:** Te recomendamos investigar herramientas como **Postman** o la extensión **Thunder Client** para Visual Studio Code. Con ellas, podrás enviar peticiones a `http://localhost:3000/articles` y probar a crear, actualizar y borrar noticias.
+
+---
+
+## Fuentes y Recursos Adicionales
+
+Aquí tienes una lista de recursos de alta calidad para profundizar en los temas que hemos cubierto y para practicar con otras APIs.
+
+### Libros y Guías Fundamentales
+*   [Eloquent JavaScript (en español)](https://www.eloquentjavascript.es/): Un libro fantástico y completo para dominar JavaScript, desde los fundamentos hasta temas avanzados.
+
+### APIs Públicas para Practicar
+*   [The Simpsons API](https://thesimpsonsapi.com/): Una API simple y divertida para obtener frases e información de Los Simpsons.
+*   [The Rick and Morty API](https://rickandmortyapi.com/documentation): Una API muy completa y bien documentada, ideal para practicar cómo manejar paginación y filtros más complejos.
+*   [PokéAPI](https://pokeapi.co/): La API de Pokémon. Es un recurso increíblemente detallado, perfecto para construir un proyecto de frontend más ambicioso.
+*   [JSONPlaceholder](https://jsonplaceholder.typicode.com/): Una API falsa para prototipado y pruebas. Proporciona endpoints RESTful de ejemplo (posts, comments, users) que son muy útiles para desarrollo.
+*   [Public APIs on GitHub](https://github.com/public-apis/public-apis): Un repositorio masivo que lista cientos de APIs públicas y gratuitas sobre todo tipo de temas.
+
+### Documentación Oficial y Diseño de APIs
+*   [Guía de inicio de Express.js](https://expressjs.com/es/starter/installing.html): La documentación oficial es el mejor lugar para aprender todas las capacidades de Express.
+*   [Guías de Node.js](https://nodejs.org/es/docs/guides): Guías oficiales sobre temas clave de Node.js.
+*   [Visión general de HTTP (MDN)](https://developer.mozilla.org/es/docs/Web/HTTP/Overview): Entender el protocolo HTTP es fundamental para cualquier desarrollador de APIs. La Mozilla Developer Network (MDN) es una referencia de máxima calidad.
+
+---
+
 ## Conclusión
 
 Este repositorio te ha mostrado el viaje completo de los datos en una aplicación web moderna: desde un servidor (local o externo), a través de una API, hasta un cliente que los presenta al usuario. Entender esta separación entre "cliente" y "servidor" y cómo se comunican es la base de todo el desarrollo web actual. ¡Sigue experimentando!
