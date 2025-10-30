@@ -1,16 +1,17 @@
 // https://newsapi.org/docs/get-started
 const API_KEY = "fc79f79a94294473acc63c5940866b0e";
-const url = "https://newsapi.org/v2/everything?q=";
+const localApiUrl = "https://newsapi.org/v2/everything?q=";
+// const localApiUrl = "http://localhost:3000/news?q=";
 
-window.addEventListener("load", () => fetchNews("India"));
+window.addEventListener("load", () => fetchNews("Colombia"));
 
 function reload() {
     window.location.reload();
 }
 
-// https://newsapi.org/v2/everything?q=India&apiKey=fc79f79a94294473acc63c5940866b0e
 async function fetchNews(query) {
-    const res = await fetch(`${url}${query}&apiKey=${API_KEY}`);
+    const res = await fetch(`${localApiUrl}${query}&apiKey=${API_KEY}`);
+    // const res = await fetch(`${localApiUrl}${query}`);
     const data = await res.json();
     bindData(data.articles);
     console.log(data)

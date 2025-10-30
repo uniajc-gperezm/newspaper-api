@@ -1,3 +1,6 @@
+// Load environment variables from .env file
+require('dotenv').config();
+
 // Import the express library
 // We need this to create our web server and handle requests.
 const express = require('express');
@@ -21,6 +24,28 @@ app.use(cors());
 // Esto permite que nuestra API entienda los datos JSON que le enviamos en las solicitudes POST y PUT.
 app.use(express.json());
 
+// --- NEW ENDPOINT: Proxy for External News API ---
+// This endpoint will receive requests from our frontend, add the secret API key,
+// and forward the request to the real NewsAPI.
+app.get('/news', async (req, res) => {
+  const query = req.query.q || 'latest'; // Use the query from the frontend, or default to 'latest'
+  const url = `https://newsapi.org/v2/everything?q=${query}&apiKey=${process.env.API_KEY}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`NewsAPI responded with ${response.status}`);
+    }
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching from NewsAPI:', error);
+    res.status(500).json({ error: 'Failed to fetch news' });
+  }
+});
+
+
+// --- ORIGINAL ENDPOINT: Local Fake Data ---
 // This is our hardcoded fake data.
 // It's an object that mimics the structure of the API you requested.
 const fakeApiData = {

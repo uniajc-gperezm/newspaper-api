@@ -6,6 +6,10 @@ const express = require('express');
 // Este objeto 'app' se utilizará para definir nuestras rutas de API.
 const app = express();
 
+// Importa y usa la librería cors para permitir peticiones desde otros dominios (el frontend)
+const cors = require('cors');
+app.use(cors());
+
 // Define el puerto en el que nuestro servidor escuchará.
 // Es una práctica común usar el puerto 3000 para desarrollo.
 const PORT = 3000;
